@@ -1,5 +1,6 @@
 package com.example.homework_intents
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -19,12 +20,21 @@ class TimerActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         savedInstanceState?.let { restoreState(it) }
+
         if (!isReceivedIntentData) intent.extras?.let { handleIntentData(it) }
+
+        if (intent?.action == Intent.ACTION_SEND) {
+            intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
+                setOnTimeReceived(it.toLong() * 1000)
+                isReceivedIntentData = true
+            }
+        }
 
         setupButtonListeners()
 
         Log.d("TAG", "onCreate Called")
     }
+
 
     private fun restoreState(savedState: Bundle) {
         millisLeft = savedState.getLong(SavedStateKey.MILLISECONDS.name)

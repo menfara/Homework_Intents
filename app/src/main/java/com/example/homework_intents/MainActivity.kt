@@ -14,6 +14,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setOnSendTime()
+        setOnShare()
+    }
+
+    private fun setOnShare() {
+        binding.materialButton1.setOnClickListener {
+            if (isValid()) {
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, binding.textInput.text.toString())
+                    type = "text/plain"
+                }
+
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                startActivity(shareIntent)
+            }
+        }
     }
 
     private fun setOnSendTime() {
